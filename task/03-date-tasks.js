@@ -22,7 +22,7 @@
  *    'Sun, 17 May 1998 03:00:00 GMT+01' => Date()
  */
 function parseDataFromRfc2822(value) {
-   throw new Error('Not implemented');
+   return Date.parse(value);
 }
 
 /**
@@ -37,7 +37,7 @@ function parseDataFromRfc2822(value) {
  *    '2016-01-19T08:07:37Z' => Date()
  */
 function parseDataFromIso8601(value) {
-   throw new Error('Not implemented');
+   return Date.parse(value);
 }
 
 
@@ -56,7 +56,8 @@ function parseDataFromIso8601(value) {
  *    Date(2015,1,1)    => false
  */
 function isLeapYear(date) {
-   throw new Error('Not implemented');
+   let year = date.getFullYear();
+   return (year % 100 === 0) ? (year % 400 === 0) : (year % 4 === 0)
 }
 
 
@@ -76,7 +77,9 @@ function isLeapYear(date) {
  *    Date(2000,1,1,10,0,0),  Date(2000,1,1,15,20,10,453)   => "05:20:10.453"
  */
 function timeSpanToString(startDate, endDate) {
-   throw new Error('Not implemented');
+ var time =  new Date (endDate - startDate);
+let str = JSON.stringify(time);
+return str.slice(12,str.length-2);
 }
 
 
@@ -94,8 +97,19 @@ function timeSpanToString(startDate, endDate) {
  *    Date.UTC(2016,3,5,21, 0) => Math.PI/2
  */
 function angleBetweenClockHands(date) {
-    throw new Error('Not implemented');
-}
+   let datum = new Date(date);
+   console.log(datum);
+   let hours24 = datum.getHours() > 3 ? datum.getHours() -3 : datum.getHours() -3+24;
+   let hours = hours24 > 12? hours24 - 12: hours24;
+   console.log(hours);
+  
+   let minutes = datum.getMinutes();
+   console.log(minutes);
+   let radian = 0;
+   let delta = 0.5*(60*hours - 11*minutes)> 180 ? 360 - 0.5*(60*hours - 11*minutes) :  0.5*(60*hours - 11*minutes);
+ 
+   return Math.abs(delta) * Math.PI/180;
+ }
 
 
 module.exports = {
