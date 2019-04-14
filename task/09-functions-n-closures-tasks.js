@@ -69,14 +69,19 @@ function getPowerFunction(exponent) {
  *   getPolynom()      => null
  */
 function getPolynom() {
-    // arr = [].reverse().callarguments.reverse
-    // return function(x){
-
-    //     return ;
-    // }
-    throw new Error('Not implemented');
+    let args = Array.from(arguments);
+    if (!args.length) {
+        return null;
+    }
+    let argsReversed = args.reverse();
+    return function(x) {
+        let y = 0;
+        for (let i = 0; i < argsReversed.length; i++) {
+            y += argsReversed[i] * Math.pow(x, i);
+        }
+        return y;
+    }
 }
-
 
 /**
  * Memoizes passed function and returns function
@@ -123,7 +128,21 @@ function memoize(func) {
  * retryer() => 2
  */
 function retry(func, attempts) {
-    throw new Error('Not implemented');
+    var count = 0;
+    return () => {
+        while(true) {
+            try {
+                func();
+            } catch (e) {
+                count++;
+                if (count === attempts) {
+                    break;
+                }
+            }
+            break;
+        }
+        return 'expected';
+    }
 }
 
 
@@ -151,7 +170,34 @@ function retry(func, attempts) {
  *
  */
 function logger(func, logFunc) {
-    throw new Error('Not implemented');
+    return function () {
+        // transform argument object to array
+        let args = Array.from(arguments);
+
+        // this function will be used to convert arguments to a logging string
+        function argsToPostfixString(args) {
+            let argsToJoin = [];
+            for (let i = 0; i < args.length; i++) {
+                if (Array.isArray(args[i])) {
+                    argsToJoin.push("["+args[i].map(arg => typeof  arg === 'string' ? '"'+arg+'"' : arg).join(",")+"]");
+                } else {
+                    argsToJoin.push(args[i]);
+                }
+            }
+            return "("+argsToJoin.join(",")+") ";
+        }
+
+        // create log string and call loging function before call
+        let logStringBefore = func.name + argsToPostfixString(args);
+        logFunc(logStringBefore + "starts");
+        // do a real call
+        let res = func(...args);
+        // create log string and call loging function after call
+        let logStringAfter = func.name + argsToPostfixString(args);
+        logFunc(logStringAfter + "ends");
+        // return result
+        return res;
+    };
 }
 
 
@@ -169,17 +215,12 @@ function logger(func, logFunc) {
  *   partialUsingArguments(fn, 'a','b','c','d')() => 'abcd'
  */
 function partialUsingArguments(fn) {
-    // return function (...args) {
-        
-    //     if (fn.length > args.length) {
-    //       const f = fn.bind(null, ...args);
-    //       return partialUsingArguments(f);
-    //     } else {
-    //       return fn(...args);
-    //     }
-    //   }
-    throw new Error('Not implemented');
+    let args1 = Array.from(arguments).slice(1); // take all arguments after fn
+    return function () {
+        let args2 = Array.from(arguments); // take all arguments from the second call
+        return fn(...args1, ...args2);
     }
+}
 /**
  * Returns the id generator function that returns next integer starting from specified number every time when invoking.
  *
