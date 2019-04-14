@@ -282,7 +282,13 @@ function reverseInteger(num) {
  *   4916123456789012 => false
  */
 function isCreditCardNumber(ccn) {
-    throw new Error('Not implemented');
+    let value = String(ccn);
+    return value.split('')
+   .reverse()
+   .map( (x) => parseInt(x) )
+   .map( (x,idx) => idx % 2 ? x * 2 : x )
+   .map( (x) => x > 9 ? (x % 10) + 1 : x )
+   .reduce( (accum, x) => accum += x ) % 10 === 0;
 }
 
 
@@ -301,8 +307,16 @@ function isCreditCardNumber(ccn) {
  *   165536 (1+6+5+5+3+6 = 26,  2+6 = 8) => 8
  */
 function getDigitalRoot(num) {
-    throw new Error('Not implemented');
-}
+    if (num === 0) return num;
+    let sum = 0;
+    while (sum === 0 || sum > 9) {
+       sum = String(num).split("").reduce((total, num) =>
+          parseInt(total) + parseInt(num));
+       num = sum;
+ 
+    }
+    return sum;
+ }
 
 
 /**
@@ -326,10 +340,16 @@ function getDigitalRoot(num) {
  *   '{)' = false
  *   '{[(<{[]}>)]}' = true 
  */
-function isBracketsBalanced(str) {
-    throw new Error('Not implemented');
+function isBracketsBalanced(brackets) {
+    let check = brackets.replace(/\(\)|\[]|{}|<>/, '');
+    // check if check is equal to brackets
+    if (check === brackets) {
+        // if so then return the inverse of bracket 
+        return !brackets;
+    }
+    // otherwise 
+    return isBracketsBalanced(check); // otherwise set the parameter equal to check and repeat
 }
-
 
 /**
  * Returns the human readable string of time period specified by the start and end time.
@@ -363,7 +383,26 @@ function isBracketsBalanced(str) {
  *
  */
 function timespanToHumanString(startDate, endDate) {
-    throw new Error('Not implemented');
+//     let arr = ['a few seconds ago', 'a minute ago','minutes ago', 'an hour ago', 'hours ago', 'a day ago',
+//     'days ago','a month ago','months ago','a year ago', 'years ago'];
+//    let deltaTime = (endDate - startDate)/1000;
+//     console.log(deltaTime);
+//    // if(deltaTime=== 90.001) return '2 minutes ago';
+//   //  if(deltaTime=== 5400.001) return '2 hours ago';
+//     if(deltaTime/ 45 <= 1) return arr[0];
+//     if(deltaTime/90 <= 1 ) return arr[1];
+//     if( deltaTime/2700 <= 1 ) return new Date(endDate - startDate).getMinutes() +" " + arr[2];
+//     if(deltaTime/5400  <= 1 ) return arr[3];
+//     if(deltaTime/79200  <= 1 ) return new Date(endDate - startDate).getHours()+" " + arr[4];
+//     if(deltaTime/129600  <= 1 ) return arr[5];
+//     if(deltaTime/21600   <= 1 ) return Math.round(deltaTime/86400)+" " + arr[6];
+//     if( deltaTime/3888000  <= 1 ) return arr[7];
+//     if(deltaTime/29808000  <= 1 ) return Math.round(deltaTime/2592000)+" " + arr[8];
+//     if(deltaTime/47088000   <= 1 ) return arr[9];
+//     if(deltaTime/47088000 >  1 ) return Math.round(deltaTime/31104000)+" " + arr[10];
+  
+// }
+throw new Error('Not implemented');
 }
 
 
@@ -387,7 +426,7 @@ function timespanToHumanString(startDate, endDate) {
  *    365, 10 => '365'
  */
 function toNaryString(num, n) {
-    throw new Error('Not implemented');
+    return num.toString(n);
 }
 
 
@@ -404,7 +443,22 @@ function toNaryString(num, n) {
  *   ['/web/favicon.ico', '/web-scripts/dump', '/webalizer/logs'] => '/'
  */
 function getCommonDirectoryPath(pathes) {
-    throw new Error('Not implemented');
+
+     //throw new Error('Not implemented');
+
+     var A = pathes.concat().sort(),
+     a1 = A[0], a2 = A[A.length - 1], L = a1.length, i = 0;
+
+ while (i < L && a1.charAt(i) === a2.charAt(i)) i++;
+
+ let str = a1.substring(0, i);
+ if (str[str.length - 1] === "/") {
+
+     return str;
+ }
+ else {
+     return str.slice(0,str.lastIndexOf("/")+1);
+ }
 }
 
 
@@ -426,8 +480,22 @@ function getCommonDirectoryPath(pathes) {
  *                         [ 6 ]]
  *
  */
-function getMatrixProduct(m1, m2) {
-    throw new Error('Not implemented');
+function getMatrixProduct(a, b) {
+    let aNumRows = a.length;
+    let aNumCols = a[0].length;
+    let bNumCols = b[0].length;
+    let   m = new Array(aNumRows);  // initialize array of rows
+
+    for (let r = 0; r < aNumRows; ++r) {
+        m[r] = new Array(bNumCols); // initialize the current row
+        for (var c = 0; c < bNumCols; ++c) {
+            m[r][c] = 0;             // initialize the current cell
+            for (var i = 0; i < aNumCols; ++i) {
+                m[r][c] += a[r][i] * b[i][c];
+            }
+        }
+    }
+    return m;
 }
 
 

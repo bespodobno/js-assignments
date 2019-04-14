@@ -58,13 +58,13 @@ function getJSON(obj) {
  *
  */
 function fromJSON(proto, json) {
-    // var obj = JSON.parse(json);
-    // obj.__proto__ = proto;
-    // return obj;
+    //  var obj = JSON.parse(json);
+    //  obj.__proto__ = proto;
+    //  return obj;
 
     // var myObj = Object.create(proto);
     // myObj.constructor = JSON.parse(json);
-    // return myObj;
+    //return obj;
     
     throw new Error('Not implemented');
 }
